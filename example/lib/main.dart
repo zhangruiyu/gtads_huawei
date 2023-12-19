@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gtads/gtads.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
-import 'package:gtads/gtads.dart';
-import 'package:gtads_huawei/gtads_huawei_provider.dart';
+import 'package:gtads_huawei/gtads_huawei.dart';
+
 
 void main() {
   runApp(MyApp());

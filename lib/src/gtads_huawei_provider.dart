@@ -1,10 +1,12 @@
+
+
 import 'dart:async';
 
 import 'package:gtads/gtads.dart';
 
 import 'flutter_huaweiad_callback.dart';
 import 'flutter_huaweiad_stream.dart';
-import 'gtads_huawei.dart';
+import 'gtads_huawei_plugin.dart';
 
 class GTAdsHuaweiProvider extends GTAdsProvider {
   GTAdsHuaweiProvider(String alias) : super(alias, '', '');
