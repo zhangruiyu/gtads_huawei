@@ -35,5 +35,5 @@ import 'package:gtads_huawei/gtads_huawei.dart';
 GTAds.addProvider(GTAdsHuaweiProvider("huawei"));
 ```
 
-> 广告位使用参考[GTAds](https://github.com/zhangruiyu/gtads_huawei/blob/main/example/lib/main.dart)
+> 广告位使用参考[GTAds](https://github.com/gstory0404/GTAds/tree/master/gtads)
 
