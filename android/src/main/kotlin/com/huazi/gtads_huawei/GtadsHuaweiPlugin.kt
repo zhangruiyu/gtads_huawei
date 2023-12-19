@@ -2,9 +2,9 @@ package com.huazi.gtads_huawei
 
 import android.app.Activity
 import android.content.Context
-import com.huawei.hms.ads.AdParam
 import com.huawei.hms.ads.HwAds
 import com.huazi.gtads_huawei.interstitialad.InterstitialAd
+import com.huazi.gtads_huawei.rewardvideoad.RewardVideoAd
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -54,20 +54,38 @@ class GtadsHuaweiPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        if (call.method == "init") {
-            val debug = call.argument<Boolean>("debug")
-            HwAds.init(applicationContext)
-            LogUtil.setAppName("flutter_huaweiad")
-            LogUtil.setShow(debug!!)
-            result.success(true)
-        } else if (call.method == "loadInterstitialAD") {
-            InterstitialAd.init(mActivity!!, call.argument("adCode")!!)
-            result.success(true)
-        } else if (call.method == "showInterstitialAD") {
-            InterstitialAd.showAd()
-            result.success(true)
-        } else {
-            result.notImplemented()
+        when (call.method) {
+            "init" -> {
+                val debug = call.argument<Boolean>("debug")
+                HwAds.init(applicationContext)
+                LogUtil.setAppName("flutter_huaweiad")
+                LogUtil.setShow(debug!!)
+                result.success(true)
+            }
+
+            "loadInterstitialAD" -> {
+                InterstitialAd.init(mActivity!!, call.argument("adCode")!!)
+                result.success(true)
+            }
+
+            "showInterstitialAD" -> {
+                InterstitialAd.showAd()
+                result.success(true)
+            }
+
+            "loadRewardVideoAd" -> {
+                RewardVideoAd.init(mActivity!!, call.arguments as Map<*, *>)
+                result.success(true)
+            }
+
+            "showRewardVideoAd" -> {
+                RewardVideoAd.showAd()
+                result.success(true)
+            }
+
+            else -> {
+                result.notImplemented()
+            }
         }
     }
 

@@ -71,10 +71,10 @@ class _IndexState extends State<Index> {
                     var b = await GTAds.rewardAd(
                       codes: [
                         GTAdsCode(
-                            alias: "ylh",
-                            probability: 5,
-                            androidId: "5042816813706194",
-                            iosId: "3035541744552914")
+                          alias: "huawei",
+                          probability: 5,
+                          androidId: "testx9dtjwj8hp",
+                        )
                       ],
                       //奖励名称
                       rewardName: "100金币",

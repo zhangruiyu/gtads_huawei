@@ -48,126 +48,68 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
             callBack.onFail!(adCode, "广告未准备就绪");
           }
         },
-        onVerify: (transId, rewardName, rewardAmount) {
+        onVerify: (rewardName, rewardAmount) {
           if (callBack != null && callBack.onVerify != null) {
             callBack.onVerify!(adCode, true, "", rewardName, rewardAmount);
           }
         },
       ),
     );
-    // FlutterUnionad.loadFullScreenVideoAdInteraction(
-    //   //android 全屏广告id 必填
-    //   androidCodeId: adCode.androidId ?? "",
-    //   //ios 全屏广告id 必填
-    //   iosCodeId: adCode.iosId ?? "",
-    //   //是否支持 DeepLink 选填
-    //   supportDeepLink: true,
-    //   //视屏方向 选填
-    //   orientation: FlutterUnionadOrientation.VERTICAL,
-    //   //控制下载APP前是否弹出二次确认弹窗
-    //   downloadType: FlutterUnionadDownLoadType.DOWNLOAD_TYPE_POPUP,
-    //   //用于标注此次的广告请求用途为预加载（当做缓存）还是实时加载，
-    //   adLoadType: FlutterUnionadLoadType.LOAD,
-    // );
     MethodChannelGtadsHuawei.loadInterstitialAD(adCode.androidId!);
     return stream;
   }
-/*
+
   @override
-  StreamSubscription? rewardAd(
-      GTAdsCode adCode,
-      String rewardName,
-      int rewardAmount,
-      String userId,
-      String customData,
-      GTAdsCallBack? callBack) {
-    StreamSubscription? stream = null;
-    stream = FlutterUnionadStream.initAdStream(
-      flutterUnionadRewardAdCallBack: FlutterUnionadRewardAdCallBack(
-        onShow: () {
-          print("激励广告--onShow--$adCode");
-          if (callBack?.onShow != null) {
-            callBack?.onShow!(adCode);
-          }
-        },
-        onClick: () {
-          if (callBack?.onClick != null) {
-            callBack?.onClick!(adCode);
-          }
-        },
-        onFail: (error) {
-          if (callBack?.onFail != null) {
-            callBack?.onFail!(adCode, error);
-          }
-        },
-        onClose: () {
-          if (callBack?.onClose != null) {
-            callBack?.onClose!(adCode);
-          }
-        },
-        onSkip: () {},
-        onVerify: (rewardVerify, rewardAmount, rewardName, code, message) {
-          if (!rewardVerify) {
-            if (callBack?.onFail != null) {
-              callBack?.onFail!(adCode, "$code $message");
-            }
-          }
-          if (callBack?.onVerify != null) {
-            callBack?.onVerify!(
-                adCode, rewardVerify, "", rewardName, rewardAmount);
-          }
-        },
-        onReady: () async {},
-        onCache: () async {
-          //显示激励广告
-          await FlutterUnionad.showRewardVideoAd();
-        },
-        onUnReady: () {
-          if (callBack?.onFail != null) {
-            callBack?.onFail!(adCode, "激励广告预加载未准备就绪");
-          }
-        },
-        onRewardArrived: (rewardVerify, rewardType, rewardAmount, rewardName,
-            errorCode, error, propose) {
-          if (callBack?.onExpand != null) {
-            var map = {
-              "type": "onRewardArrived",
-              "rewardVerify": rewardVerify,
-              "rewardType": rewardType,
-              "rewardAmount": rewardAmount,
-              "rewardName": rewardName,
-              "errorCode": errorCode,
-              "error": error,
-              "propose": propose,
-            };
-            callBack?.onExpand!(adCode, map);
-          }
-        },
-      ),
+  StreamSubscription? rewardAd(GTAdsCode adCode, String rewardName, int rewardAmount,
+      String userId, String customData, GTAdsCallBack? callBack) {
+    StreamSubscription? stream;
+    stream = FlutterHuaweiAdStream.initAdStream(
+      //激励广告
+      flutterHuaweiadRewardCallBack:
+      FlutterHuaweiadRewardCallBack(onShow: () {
+        if (callBack != null && callBack.onShow != null) {
+          callBack.onShow!(adCode);
+        }
+      }, onClick: () {
+        if (callBack != null && callBack.onClick != null) {
+          callBack.onClick!(adCode);
+        }
+      }, onFail: (code, message) {
+        if (callBack != null && callBack.onFail != null) {
+          callBack.onFail!(adCode, message);
+        }
+      }, onClose: () {
+        if (callBack != null && callBack.onClose != null) {
+          callBack.onClose!(adCode);
+        }
+      }, onReady: () async {
+        await MethodChannelGtadsHuawei.showRewardVideoAd();
+      }, onUnReady: () {
+        if (callBack != null && callBack.onFail != null) {
+          callBack.onFail!(adCode, "激励广告预加载未准备就绪");
+        }
+      }, onVerify: (rewardName, rewardAmount) {
+        if (callBack != null && callBack.onVerify != null) {
+          callBack.onVerify!(adCode, true, "", rewardName, rewardAmount);
+        }
+      }, onFinish: () {
+        if (callBack != null && callBack.onFinish != null) {
+          callBack.onFinish!(adCode);
+        }
+      }),
     );
-    FlutterUnionad.loadRewardVideoAd(
-      //是否个性化 选填
-      androidCodeId: adCode.androidId ?? "",
-      //Android 激励视频广告id  必填
-      iosCodeId: adCode.iosId ?? "",
-      //ios 激励视频广告id  必填
-      supportDeepLink: true,
-      //是否支持 DeepLink 选填
-      rewardName: rewardName,
-      //奖励名称 选填
-      rewardAmount: rewardAmount,
-      //奖励数量 选填
+    MethodChannelGtadsHuawei.loadRewardVideoAd(
+      //android广告id
+      androidId: adCode.androidId ?? "",
+      //用户id
       userID: userId,
-      //  用户id 选填
-      orientation: FlutterUnionadOrientation.VERTICAL,
-      //控制下载APP前是否弹出二次确认弹窗
-      downloadType: FlutterUnionadDownLoadType.DOWNLOAD_TYPE_POPUP,
-      //视屏方向 选填
-      mediaExtra: customData,
-      //扩展参数 选填
-      //用于标注此次的广告请求用途为预加载（当做缓存）还是实时加载，
-      adLoadType: FlutterUnionadLoadType.PRELOAD,
+      //奖励
+      rewardName: rewardName,
+      //奖励数
+      rewardAmount: rewardAmount,
+      //扩展参数 服务器回调使用
+      customData: customData,
     );
     return stream;
-  }*/
+  }
 }

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'flutter_huaweiad_callback.dart';
 import 'flutter_huaweiad_code.dart.dart';
 
-
 /// @Author: gstory
 /// @CreateDate: 2021/8/9 9:30 下午
 /// @Description: dart类作用描述
@@ -23,12 +22,10 @@ class FlutterHuaweiAdStream {
   ///
   static StreamSubscription initAdStream(
       {FlutterHuaweiadRewardCallBack? flutterHuaweiadRewardCallBack,
-      FlutterHuaweiadInteractionCallBack?
-          flutterHuaweiadInteractionCallBack}) {
+      FlutterHuaweiadInteractionCallBack? flutterHuaweiadInteractionCallBack}) {
     StreamSubscription _adStream =
         HuaweiAdEventEvent.receiveBroadcastStream().listen((data) {
       switch (data[FlutterHuaweiadType.adType]) {
-
         ///激励广告
         case FlutterHuaweiadType.rewardAd:
           switch (data[FlutterHuaweiadMethod.onAdMethod]) {
@@ -56,7 +53,7 @@ class FlutterHuaweiAdStream {
             case FlutterHuaweiadMethod.onVerify:
               if (flutterHuaweiadRewardCallBack?.onVerify != null) {
                 flutterHuaweiadRewardCallBack?.onVerify!(
-                    data["transId"], data["rewardName"], data["rewardAmount"]);
+                    data["rewardName"], data["rewardAmount"]);
               }
               break;
             case FlutterHuaweiadMethod.onFinish:
@@ -129,8 +126,7 @@ class FlutterHuaweiAdStream {
               break;
             case FlutterHuaweiadMethod.onVerify:
               if (flutterHuaweiadInteractionCallBack?.onVerify != null) {
-                flutterHuaweiadInteractionCallBack?.onVerify!(
-                    data["transId"], "", 0);
+                flutterHuaweiadInteractionCallBack?.onVerify!("", 0);
               }
               break;
             case FlutterHuaweiadMethod.onECPM:
