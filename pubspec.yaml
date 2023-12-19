@@ -1,7 +1,7 @@
 name: gtads_huawei
-description: "A new Flutter project."
-version: 0.0.1
-homepage:
+description: "GTAds华为广告支持"
+version: 1.0.0
+homepage: https://github.com/zhangruiyu/gtads_huawei
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
