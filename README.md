@@ -20,7 +20,7 @@
  //广告基础库 必须引入
  gtads: ^1.3.0
  //华为广告
- gtads_huawei: ^1.0.1
+ gtads_huawei: current version
 ```
 
 ### 引入
