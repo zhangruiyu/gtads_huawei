@@ -1,10 +1,10 @@
 name: gtads_huawei
 description: "GTAds华为广告支持"
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/zhangruiyu/gtads_huawei
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: '>=2.19.6 <4.0.0'
   flutter: '>=3.3.0'
 
 dependencies:
