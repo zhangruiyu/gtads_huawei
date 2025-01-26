@@ -16,7 +16,7 @@ import FullScreenVideoAdInteraction from './FullScreenVideoAdInteraction';
 import hilog from '@ohos.hilog';
 import { BusinessError } from '@kit.BasicServicesKit';
 
-/** FlutterUnionadPlugin **/
+/** GtadsHuaweiPlugin **/
 export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandler, AbilityAware {
   private channel: MethodChannel | null = null;
   private applicationContext: Context | null = null;

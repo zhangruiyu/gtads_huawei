@@ -34,23 +34,23 @@ class GtadsHuaweiPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         mActivity = binding.activity
-//        Log.e("FlutterUnionadPlugin->","onAttachedToActivity")
+//        Log.e("GtadsHuaweiPlugin->","onAttachedToActivity")
 //        FlutterTencentAdViewPlugin.registerWith(mFlutterPluginBinding!!,mActivity!!)
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         mActivity = binding.activity
-//        Log.e("FlutterUnionadPlugin->","onReattachedToActivityForConfigChanges")
+//        Log.e("GtadsHuaweiPlugin->","onReattachedToActivityForConfigChanges")
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
         mActivity = null
-//        Log.e("FlutterUnionadPlugin->","onDetachedFromActivityForConfigChanges")
+//        Log.e("GtadsHuaweiPlugin->","onDetachedFromActivityForConfigChanges")
     }
 
     override fun onDetachedFromActivity() {
         mActivity = null
-//        Log.e("FlutterUnionadPlugin->","onDetachedFromActivity")
+//        Log.e("GtadsHuaweiPlugin->","onDetachedFromActivity")
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
