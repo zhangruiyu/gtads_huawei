@@ -155,7 +155,7 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
       //   this.rewardAd?.showRewardAd(this.uiAbility.context.windowStage)
       // }
       // result.success(true)
-    } else if (call.method == "loadFullScreenVideoAdInteraction") {
+    } else if (call.method == "loadInterstitialAD") {
       let ohosCodeId: string = call.args.get("ohosCodeId");
       // let orientation: number = call.args.get("orientation");
       FullScreenVideoAdInteraction.init(
@@ -166,7 +166,7 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
       )
       result.success(true)
       //显示插屏广告 全屏插屏二合一
-    } else if (call.method == "showFullScreenVideoAdInteraction") {
+    } else if (call.method == "showInterstitialAD") {
       FullScreenVideoAdInteraction.showAd()
       result.success(true)
     } else {
