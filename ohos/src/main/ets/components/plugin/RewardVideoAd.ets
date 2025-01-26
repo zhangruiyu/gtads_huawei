@@ -45,7 +45,7 @@ export default class RewardVideoAd {
       // 广告类型：激励广告
       adType: 7,
       // 'testx9dtjwj8hp'为测试专用的广告位ID，App正式发布时需要改为正式的广告位ID
-      adId: RewardVideoAd.mCodeId!,
+      adId: 'testx9dtjwj8hp',
       // 开放匿名设备标识符
       oaid: await identifier.getOAID()
     };
@@ -66,7 +66,10 @@ export default class RewardVideoAd {
         hilog.error(0x0000, 'testTag', '%{public}s',
           `Failed to request ad, message: ${errorMsg}, error code: ${errorCode}`);
         FlutterUnionadEventPlugin.sendContent({
-          "adType": "rewardAd", "onAdMethod": "onFail", "error": errorCode + errorMsg
+          "adType": "rewardAd",
+          "onAdMethod": "onFail",
+          "code": errorCode,
+          "message": errorMsg
         });
       },
       onAdLoadSuccess: (ads: Array<advertising.Advertisement>) => {
@@ -187,7 +190,7 @@ export default class RewardVideoAd {
     });
   }
 
-  public static showAd():void {
+  public static showAd(): void {
     RewardVideoAd.registerPPSReceiver();
     if (RewardVideoAd.mTTAdNative == null) {
       let map: Record<string, Any> = {
