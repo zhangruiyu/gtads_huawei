@@ -10,8 +10,11 @@ import {
   MethodResult,
 } from '@ohos/flutter_ohos';
 import { UIAbility } from '@kit.AbilityKit';
+import { advertising, AutoAdComponent, identifier } from '@kit.AdsKit';
 import FlutterUnionadEventPlugin from './FlutterUnionadEventPlugin';
 import FullScreenVideoAdInteraction from './FullScreenVideoAdInteraction';
+import hilog from '@ohos.hilog';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 /** FlutterUnionadPlugin **/
 export default class FlutterUnionadPlugin implements FlutterPlugin, MethodCallHandler, AbilityAware {
@@ -49,26 +52,19 @@ export default class FlutterUnionadPlugin implements FlutterPlugin, MethodCallHa
     this.uiAbility = null
   }
 
-  onMethodCall(call: MethodCall, result: MethodResult): void {
+  async onMethodCall(call: MethodCall, result: MethodResult): Promise<void> {
     if (call.method == "register") {
-      // let ohosAppId: string = call.args.get("ohosAppId");
-      // let appName: string = call.args.get("appName");
-      // let debug: boolean = call.args.get("debug");
-      // // 创建SDKConfig对象
-      // let adConfigBuilder = new SDKConfigBuilder()
-      // let config: SDKConfig = adConfigBuilder
-      //   .appId(ohosAppId)
-      //   .appName(appName)
-      //   .allowShowNotify(true)
-      //   .debug(debug)
-      //   .build()
-      //
-      // // 初始化SDK
-      // CSJAdSdk.init(this.uiAbility?.context, config) //context类型必须为UIAbility，否则可能存在展示异常场景
-      //
-      // // 启动SDK
-      // CSJAdSdk.start();
-      // result.success(true)
+      result.success(true)
+    } else if (call.method == "getOAID") {
+      // 使用Promise回调方式获取OAID
+      identifier.getOAID().then((data) => {
+        result.success(data)
+        hilog.info(0x0000, 'testTag', '%{public}s', `Succeeded in getting adsIdentifierInfo by promise`);
+      }).catch((error: BusinessError) => {
+        result.success("")
+        hilog.error(0x0000, 'testTag', '%{public}s',
+          `Failed to get adsIdentifierInfo, code: ${error.code}, message: ${error.message}`);
+      })
     } else if (call.method == "getSDKVersion") {
       // result.success(CSJAdSdk.getSDKVersion())
     } else if (call.method == "getThemeStatus") {
@@ -160,18 +156,18 @@ export default class FlutterUnionadPlugin implements FlutterPlugin, MethodCallHa
       // }
       // result.success(true)
     } else if (call.method == "loadFullScreenVideoAdInteraction") {
-      // let ohosCodeId: string = call.args.get("ohosCodeId");
+      let ohosCodeId: string = call.args.get("ohosCodeId");
       // let orientation: number = call.args.get("orientation");
-      // FullScreenVideoAdInteraction.init(
-      //   this.applicationContext!,
-      //   this.uiAbility!.context.windowStage,
-      //   ohosCodeId,
-      //   orientation!!,
-      // )
-      // result.success(true)
+      FullScreenVideoAdInteraction.init(
+        this.applicationContext!,
+        this.uiAbility!.context.windowStage,
+        ohosCodeId,
+        // orientation!!,
+      )
+      result.success(true)
       //显示插屏广告 全屏插屏二合一
     } else if (call.method == "showFullScreenVideoAdInteraction") {
-      // FullScreenVideoAdInteraction.showAd()
+      FullScreenVideoAdInteraction.showAd()
       result.success(true)
     } else {
       result.notImplemented()

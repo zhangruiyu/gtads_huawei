@@ -119,6 +119,7 @@ class _IndexState extends State<Index> {
                             alias: "huawei",
                             probability: 5,
                             androidId: "testb4znbuh3n2",
+                            ohosId: 'testb4znbuh3n2'
                           )
                         ],
                         isFull: false,

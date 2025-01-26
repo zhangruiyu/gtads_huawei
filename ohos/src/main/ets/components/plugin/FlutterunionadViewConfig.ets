@@ -1,11 +1,11 @@
 export default class FlutterunionadViewConfig {
-  public static readonly adevent = "com.gstory.flutter_unionad/adevent";
+  public static readonly adevent = "com.huazi.gtads_huawei/adevent";
   //SplashAdView
-  public static readonly splashAdView = "com.gstory.flutter_unionad/SplashAdView"
+  public static readonly splashAdView = "com.huazi.gtads_huawei/SplashAdView"
   //BannerAdView
-  public static readonly bannerAdView = "com.gstory.flutter_unionad/BannerAdView"
+  public static readonly bannerAdView = "com.huazi.gtads_huawei/BannerAdView"
   //NativeAdView
-  public static readonly nativeAdView = "com.gstory.flutter_unionad/NativeAdView"
+  public static readonly nativeAdView = "com.huazi.gtads_huawei/NativeAdView"
   //DrawFeedAdView
-  public static readonly drawFeedAdView = "com.gstory.flutter_unionad/DrawFeedAdView"
+  public static readonly drawFeedAdView = "com.huazi.gtads_huawei/DrawFeedAdView"
 }
