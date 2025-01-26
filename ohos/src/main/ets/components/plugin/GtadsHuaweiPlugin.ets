@@ -17,7 +17,7 @@ import hilog from '@ohos.hilog';
 import { BusinessError } from '@kit.BasicServicesKit';
 
 /** FlutterUnionadPlugin **/
-export default class FlutterUnionadPlugin implements FlutterPlugin, MethodCallHandler, AbilityAware {
+export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandler, AbilityAware {
   private channel: MethodChannel | null = null;
   private applicationContext: Context | null = null;
   private uiAbility: UIAbility | null = null;
@@ -28,7 +28,7 @@ export default class FlutterUnionadPlugin implements FlutterPlugin, MethodCallHa
   }
 
   getUniqueClassName(): string {
-    return "FlutterUnionadPlugin"
+    return "GtadsHuaweiPlugin"
   }
 
   onAttachedToEngine(binding: FlutterPluginBinding): void {
