@@ -92,7 +92,7 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
           `Failed to get adsIdentifierInfo, code: ${error.code}, message: ${error.message}`);
       })
     } else if (call.method == "loadRewardVideoAd") {
-      let ohosCodeId: string = call.args.get("ohosCodeId");
+      let ohosCodeId: string = call.args.get("ohosId");
       RewardVideoAd.init(
         this.applicationContext!,
         this.uiAbility!.context.windowStage,
@@ -104,7 +104,7 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
       RewardVideoAd.showAd()
       result.success(true)
     } else if (call.method == "loadInterstitialAD") {
-      let ohosCodeId: string = call.args.get("ohosCodeId");
+      let ohosCodeId: string = call.args.get("ohosId");
       // let orientation: number = call.args.get("orientation");
       FullScreenVideoAdInteraction.init(
         this.applicationContext!,
