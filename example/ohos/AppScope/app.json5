@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.example.example",
+    "bundleName": "com.huawei.ads.interstitial",
     "vendor": "example",
     "versionCode": 1000000,
     "versionName": "1.0.0",

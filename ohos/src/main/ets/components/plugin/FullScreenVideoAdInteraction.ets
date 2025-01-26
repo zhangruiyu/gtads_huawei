@@ -47,7 +47,7 @@ export default class FullScreenVideoAdInteraction {
     FullScreenVideoAdInteraction.loadFullScreenVideoAd()
   }
 
-  private static loadFullScreenVideoAd() {
+  private static async loadFullScreenVideoAd() {
     let adLoader: advertising.AdLoader = new advertising.AdLoader(FullScreenVideoAdInteraction.mContext!);
     const adRequestParam: advertising.AdRequestParams = {
       // 广告类型：插屏广告
@@ -55,19 +55,17 @@ export default class FullScreenVideoAdInteraction {
       // 'testb4znbuh3n2'为测试专用的广告位ID，App正式发布时需要改为正式的广告位ID
       adId: 'testb4znbuh3n2',
       // 开放匿名设备标识符
-      oaid: ""
+      oaid: await identifier.getOAID()
     };
     const adOption: advertising.AdOptions = {
-      // 设置是否请求非个性化广告
-      nonPersonalizedAd: 0,
-      // 是否允许流量下载0：不允许，1：允许，不设置以广告主设置为准
-      allowMobileTraffic: 1,
-      // 是否希望根据 COPPA 的规定将您的内容视为面向儿童的内容: -1默认值，不确定 0不希望 1希望
+      // 是否允许流量下载  0不允许 1允许，不设置以广告主设置为准
+      allowMobileTraffic: 0,
+      // 是否希望根据 COPPA 的规定将您的内容视为面向儿童的内容，: -1默认值，不确定 0不希望 1希望
       tagForChildProtection: -1,
-      // 是否希望按适合未达到法定承诺年龄的欧洲经济区 (EEA) 用户的方式处理该广告请求： -1默认值，不确定 0不希望 1希望
+      // 是否希望按适合未达到法定承诺年龄的欧洲经济区 (EEA) 用户的方式处理该广告请求 -1默认值，不确定 0不希望 1希望
       tagForUnderAgeOfPromise: -1,
       // 设置广告内容分级上限: W: 3+,所有受众 PI: 7+,家长指导 J:12+,青少年 A: 16+/18+，成人受众
-      adContentClassification: 'W'
+      adContentClassification: 'A'
     };
     const adLoaderListener: advertising.AdLoadListener = {
       onAdLoadFailure: (errorCode: number, errorMsg: string) => {
