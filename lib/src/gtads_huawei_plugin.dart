@@ -10,9 +10,15 @@ class MethodChannelGtadsHuawei {
     return result!;
   }
 
-  static Future<bool> loadInterstitialAD(String adCode) async {
-    final result = await methodChannel
-        .invokeMethod<bool>('loadInterstitialAD', {'adCode': adCode});
+  static Future<bool> loadInterstitialAD({
+    required String androidId,
+    required String ohosId,
+  }) async {
+    final result =
+        await methodChannel.invokeMethod<bool>('loadInterstitialAD', {
+      "ohosId": ohosId,
+      "androidId": androidId,
+    });
     return result!;
   }
 

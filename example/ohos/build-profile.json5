@@ -6,9 +6,9 @@
         "type": "HarmonyOS",
         "material": {
           "certpath": "/Users/housemao/.ohos/config/default_ohos_cfZcZ9Bj0F2weQBQp4XFjO0FLYLIQv28GzLPhRUmyoY=.cer",
-          "storePassword": "0000001B85412A502CE74C0B0F48FD2BB9A2BD14EE55C5CD6C1B8B2F57A8AA9EC5ADAD5C24B314DCC5D037",
+          "storePassword": "0000001B0C0472F393473F6194D358ADAE72847F1B72BC23993802C8792BEADFF773BA25025DE6B77B99D2",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BA8BBA87EB7ACA16DA92FC252241C4B1C8E9DA25DADAB13FFB49B4D6254C158CA92E848C1BFAFC9",
+          "keyPassword": "0000001B61FEDC1669D7AAD415C5DADA5991E47D7609451C0F56D895D55E579DCD8A11A10EFF646B148598",
           "profile": "/Users/housemao/.ohos/config/default_ohos_cfZcZ9Bj0F2weQBQp4XFjO0FLYLIQv28GzLPhRUmyoY=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "/Users/housemao/.ohos/config/default_ohos_cfZcZ9Bj0F2weQBQp4XFjO0FLYLIQv28GzLPhRUmyoY=.p12"
@@ -28,6 +28,30 @@
     {
       "name": "entry",
       "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "gtads_huawei",
+      "srcPath": "../../ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "integration_test",
+      "srcPath": "../../../../../fvm/versions/3.22.1-0.0.pre.16/packages/integration_test/ohos",
       "targets": [
         {
           "name": "default",

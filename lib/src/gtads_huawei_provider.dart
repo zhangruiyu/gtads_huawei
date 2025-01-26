@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:gtads/gtads.dart';
@@ -57,18 +55,23 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
         },
       ),
     );
-    MethodChannelGtadsHuawei.loadInterstitialAD(adCode.androidId!);
+    MethodChannelGtadsHuawei.loadInterstitialAD(
+        androidId: adCode.androidId ?? "", ohosId: adCode.ohosId ?? "");
     return stream;
   }
 
   @override
-  StreamSubscription? rewardAd(GTAdsCode adCode, String rewardName, int rewardAmount,
-      String userId, String customData, GTAdsCallBack? callBack) {
+  StreamSubscription? rewardAd(
+      GTAdsCode adCode,
+      String rewardName,
+      int rewardAmount,
+      String userId,
+      String customData,
+      GTAdsCallBack? callBack) {
     StreamSubscription? stream;
     stream = FlutterHuaweiAdStream.initAdStream(
       //激励广告
-      flutterHuaweiadRewardCallBack:
-      FlutterHuaweiadRewardCallBack(onShow: () {
+      flutterHuaweiadRewardCallBack: FlutterHuaweiadRewardCallBack(onShow: () {
         if (callBack != null && callBack.onShow != null) {
           callBack.onShow!(adCode);
         }
