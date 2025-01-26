@@ -30,7 +30,7 @@ export default class FullScreenVideoAdInteraction {
   private static mttFullVideoAd: advertising.Advertisement | null = null
 
   // //广告所需参数
-  // private static mCodeId: string | null = null
+  private static mCodeId: string | null = null
   // private static orientation: number = 1
   // private static mAdCreator: CSJAdCreator | null
 
@@ -42,7 +42,7 @@ export default class FullScreenVideoAdInteraction {
   ): void {
     FullScreenVideoAdInteraction.mContext = context
     FullScreenVideoAdInteraction.mActivity = mActivity
-    // FullScreenVideoAdInteraction.mCodeId = mCodeId
+    FullScreenVideoAdInteraction.mCodeId = mCodeId
     // FullScreenVideoAdInteraction.orientation = orientation!!
     FullScreenVideoAdInteraction.loadFullScreenVideoAd()
   }
@@ -53,7 +53,7 @@ export default class FullScreenVideoAdInteraction {
       // 广告类型：插屏广告
       adType: 12,
       // 'testb4znbuh3n2'为测试专用的广告位ID，App正式发布时需要改为正式的广告位ID
-      adId: 'testb4znbuh3n2',
+      adId: FullScreenVideoAdInteraction.mCodeId,
       // 开放匿名设备标识符
       oaid: await identifier.getOAID()
     };
@@ -195,44 +195,5 @@ export default class FullScreenVideoAdInteraction {
       // 插屏广告视频播放是否静音
       mute: true
     }, getContext(FullScreenVideoAdInteraction.mActivity) as common.UIAbilityContext);
-
-    // let adInteractionListener: FullAdInteractionListener = {
-    //   onShow: () => {
-    //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAdInteraction show")
-    //     let map: Record<string, Any> = {
-    //       "adType": "interactAd", "onAdMethod": "onShow"
-    //     }
-    //     FlutterUnionadEventPlugin.sendContent(map)
-    //   },
-    //   onSkip: () => {
-    //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd skipped")
-    //     let map: Record<string, Any> = {
-    //       "adType": "interactAd", "onAdMethod": "onSkip"
-    //     }
-    //     FlutterUnionadEventPlugin.sendContent(map)
-    //   },
-    //   onClick: () => {
-    //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd click")
-    //     let map: Record<string, Any> = {
-    //       "adType": "interactAd", "onAdMethod": "onClick"
-    //     }
-    //     FlutterUnionadEventPlugin.sendContent(map)
-    //   },
-    //   onClose: () => {
-    //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd close")
-    //     let map: Record<string, Any> = {
-    //       "adType": "interactAd", "onAdMethod": "onClose"
-    //     }
-    //     FlutterUnionadEventPlugin.sendContent(map)
-    //   },
-    //   onComplete: () => {
-    //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd complete")
-    //     let map: Record<string, Any> = {
-    //       "adType": "interactAd", "onAdMethod": "onFinish"
-    //     }
-    //     FlutterUnionadEventPlugin.sendContent(map)
-    //   }
-    // FullScreenVideoAdInteraction.mttFullVideoAd?.setInteractionListener(adInteractionListener)
-    // FullScreenVideoAdInteraction.mttFullVideoAd?.showFullAd(FullScreenVideoAdInteraction.mActivity)
   }
 }
