@@ -73,7 +73,7 @@ export default class FullScreenVideoAdInteraction {
           `Failed to request ad, message: ${errorMsg}, error code: ${errorCode}`);
         Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd加载失败  $code === > $message")
         let map: Record<string, Any> = {
-          "adType": "fullScreenVideoAdInteraction",
+          "adType": "interactAd",
           "onAdMethod": "onFail",
           "error": errorCode + errorMsg
         }
@@ -85,7 +85,7 @@ export default class FullScreenVideoAdInteraction {
         // 广告基础信息加载完成
         Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAdInteraction loaded")
         let map: Record<string, Any> = {
-          "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onReady"
+          "adType": "interactAd", "onAdMethod": "onReady"
         }
         FlutterUnionadEventPlugin.sendContent(map)
       },
@@ -132,14 +132,14 @@ export default class FullScreenVideoAdInteraction {
                   hilog.info(0x0000, 'testTag', '%{public}s', 'onAdOpen');
                   Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAdInteraction show")
                   FlutterUnionadEventPlugin.sendContent({
-                    "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onShow"
+                    "adType": "interactAd", "onAdMethod": "onShow"
                   })
                   break;
                 case AdStatus.AD_CLICKED:
                   hilog.info(0x0000, 'testTag', '%{public}s', 'onAdClick');
                   Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd click")
                   FlutterUnionadEventPlugin.sendContent({
-                    "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onClick"
+                    "adType": "interactAd", "onAdMethod": "onClick"
                   })
                   break;
                 case AdStatus.AD_CLOSED:
@@ -147,7 +147,7 @@ export default class FullScreenVideoAdInteraction {
                   FullScreenVideoAdInteraction.unRegisterPPSReceiver();
                   Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd close")
                   FlutterUnionadEventPlugin.sendContent({
-                    "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onClose"
+                    "adType": "interactAd", "onAdMethod": "onClose"
                   })
                   break;
                 case AdStatus.AD_VIDEO_START:
@@ -157,7 +157,7 @@ export default class FullScreenVideoAdInteraction {
                   hilog.info(0x0000, 'testTag', '%{public}s', 'onAdCompleted');
                   Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd complete")
                   FlutterUnionadEventPlugin.sendContent({
-                    "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onFinish"
+                    "adType": "interactAd", "onAdMethod": "onFinish"
                   })
                   break;
                 default:
@@ -184,7 +184,7 @@ export default class FullScreenVideoAdInteraction {
     FullScreenVideoAdInteraction.registerPPSReceiver();
     if (FullScreenVideoAdInteraction.mttFullVideoAd == null) {
       let map: Record<string, Any> = {
-        "adType": "fullScreenVideoAdInteraction",
+        "adType": "interactAd",
         "onAdMethod": "onUnReady",
         "error": "广告预加载未完成"
       }
@@ -200,35 +200,35 @@ export default class FullScreenVideoAdInteraction {
     //   onShow: () => {
     //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAdInteraction show")
     //     let map: Record<string, Any> = {
-    //       "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onShow"
+    //       "adType": "interactAd", "onAdMethod": "onShow"
     //     }
     //     FlutterUnionadEventPlugin.sendContent(map)
     //   },
     //   onSkip: () => {
     //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd skipped")
     //     let map: Record<string, Any> = {
-    //       "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onSkip"
+    //       "adType": "interactAd", "onAdMethod": "onSkip"
     //     }
     //     FlutterUnionadEventPlugin.sendContent(map)
     //   },
     //   onClick: () => {
     //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd click")
     //     let map: Record<string, Any> = {
-    //       "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onClick"
+    //       "adType": "interactAd", "onAdMethod": "onClick"
     //     }
     //     FlutterUnionadEventPlugin.sendContent(map)
     //   },
     //   onClose: () => {
     //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd close")
     //     let map: Record<string, Any> = {
-    //       "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onClose"
+    //       "adType": "interactAd", "onAdMethod": "onClose"
     //     }
     //     FlutterUnionadEventPlugin.sendContent(map)
     //   },
     //   onComplete: () => {
     //     Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd complete")
     //     let map: Record<string, Any> = {
-    //       "adType": "fullScreenVideoAdInteraction", "onAdMethod": "onFinish"
+    //       "adType": "interactAd", "onAdMethod": "onFinish"
     //     }
     //     FlutterUnionadEventPlugin.sendContent(map)
     //   }
