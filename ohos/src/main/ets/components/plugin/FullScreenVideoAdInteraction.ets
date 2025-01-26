@@ -53,7 +53,7 @@ export default class FullScreenVideoAdInteraction {
       // 广告类型：插屏广告
       adType: 12,
       // 'testb4znbuh3n2'为测试专用的广告位ID，App正式发布时需要改为正式的广告位ID
-      adId: FullScreenVideoAdInteraction.mCodeId,
+      adId: FullScreenVideoAdInteraction.mCodeId!,
       // 开放匿名设备标识符
       oaid: await identifier.getOAID()
     };
