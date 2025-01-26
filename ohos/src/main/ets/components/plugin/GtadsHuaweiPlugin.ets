@@ -52,7 +52,7 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
     this.uiAbility = null
   }
 
-  async onMethodCall(call: MethodCall, result: MethodResult): Promise<void> {
+  onMethodCall(call: MethodCall, result: MethodResult): void {
     if (call.method == "register") {
       result.success(true)
     } else if (call.method == "getOAID") {
