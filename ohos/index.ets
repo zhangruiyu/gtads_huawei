@@ -13,5 +13,5 @@
 * limitations under the License.
 */
 
-import FlutterUnionadPlugin from './src/main/ets/components/plugin/GtadsHuaweiPlugin';
-export default FlutterUnionadPlugin;
+import GtadsHuaweiPlugin from './src/main/ets/components/plugin/GtadsHuaweiPlugin';
+export default GtadsHuaweiPlugin;
