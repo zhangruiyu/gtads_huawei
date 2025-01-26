@@ -1,7 +1,7 @@
 import { window } from "@kit.ArkUI";
 import { advertising, identifier } from '@kit.AdsKit';
 import hilog from "@ohos.hilog";
-import FlutterUnionadEventPlugin from "gtads_huawei/src/main/ets/components/plugin/FlutterUnionadEventPlugin";
+import FlutterUnionadEventPlugin from './FlutterUnionadEventPlugin';
 import { common } from "@kit.AbilityKit";
 import { BusinessError, commonEventManager } from '@kit.BasicServicesKit';
 import { Any, Log } from "@ohos/flutter_ohos";
