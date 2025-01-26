@@ -14,8 +14,8 @@
   },
   "overrides": {
     "@ohos/flutter_ohos": "file:./har/flutter.har",
-    "gtads_huawei": "../../ohos",
-    "integration_test": "../../../../../fvm/versions/3.22.1-0.0.pre.16/packages/integration_test/ohos",
+    "gtads_huawei": "file:./har/gtads_huawei.har",
+    "integration_test": "file:./har/integration_test.har",
     "@ohos/flutter_module": "file:./entry"
   }
 }
