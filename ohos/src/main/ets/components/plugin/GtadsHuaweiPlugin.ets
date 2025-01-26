@@ -15,6 +15,7 @@ import FlutterUnionadEventPlugin from './FlutterUnionadEventPlugin';
 import FullScreenVideoAdInteraction from './FullScreenVideoAdInteraction';
 import hilog from '@ohos.hilog';
 import { BusinessError } from '@kit.BasicServicesKit';
+import RewardVideoAd from 'gtads_huawei/src/main/ets/components/plugin/RewardVideoAd';
 
 /** GtadsHuaweiPlugin **/
 export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandler, AbilityAware {
@@ -90,96 +91,18 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
         hilog.error(0x0000, 'testTag', '%{public}s',
           `Failed to get adsIdentifierInfo, code: ${error.code}, message: ${error.message}`);
       })
-    } else if (call.method == "getSDKVersion") {
-      // result.success(CSJAdSdk.getSDKVersion())
-    } else if (call.method == "getThemeStatus") {
-      //todo 没做
-      result.success(0)
     } else if (call.method == "loadRewardVideoAd") {
-      // let ohosCodeId: string = call.args.get("ohosCodeId");
-      // let adSlot = new AdSlotBuilder()
-      //   .setCodeId(ohosCodeId)
-      //   .setAdLoadType(AdLoadType.LOAD)// .setMediaExtra(mediaExtra)
-      //   .build()
-      // let mLoadListener: RewardAdLoadListener = {
-      //   onAdLoaded: (rewardAd: CSJRewardAd) => {
-      //     console.error("rewardVideoAd loaded 广告类型：${getAdType(ad.rewardVideoAdType)}")
-      //     this.rewardAd = rewardAd;
-      //     FlutterUnionadEventPlugin.sendContent(
-      //       new Map([["adType", "rewardAd"], ["onAdMethod", "onReady"]])
-      //     );
-      //   },
-      //   onAdCached: (rewardAd: CSJRewardAd) => {
-      //     console.error("rewardVideoAd video cached2")
-      //     let map: Record<string, Any> = {
-      //       "adType": "rewardAd", "onAdMethod": "onCache"
-      //     };
-      //     FlutterUnionadEventPlugin.sendContent(map)
-      //   },
-      //   onError: (code: number, message: string) => {
-      //     console.error("视频加载失败" + code + message);
-      //     let map: Record<string, Any> = {
-      //       "adType": "rewardAd", "onAdMethod": "onFail", "error": code + message
-      //     };
-      //     FlutterUnionadEventPlugin.sendContent(map);
-      //   }
-      // }
-      // this.adCreator.loadRewardAd(adSlot, mLoadListener)
-      // result.success(true)
+      let ohosCodeId: string = call.args.get("ohosCodeId");
+      RewardVideoAd.init(
+        this.applicationContext!,
+        this.uiAbility!.context.windowStage,
+        ohosCodeId,
+        // orientation!!,
+      )
+      result.success(true)
     } else if (call.method == "showRewardVideoAd") {
-      // let adInteractionListener: RewardAdInteractionListener = {
-      //   onShow: () => {
-      //     console.error("rewardVideoAd show")
-      //     let map: Record<string, Any> = {
-      //       "adType": "rewardAd", "onAdMethod": "onShow"
-      //     };
-      //     FlutterUnionadEventPlugin.sendContent(map)
-      //   },
-      //   onSkip: () => {
-      //     console.error("rewardVideoAd onSkippedVideo")
-      //     let map: Record<string, Any> = {
-      //       "adType": "rewardAd", "onAdMethod": "onSkip"
-      //     };
-      //     FlutterUnionadEventPlugin.sendContent(map)
-      //   },
-      //   onClick: () => {
-      //     console.error("rewardVideoAd bar click")
-      //     let map: Record<string, Any> = {
-      //       "adType": "rewardAd", "onAdMethod": "onClick"
-      //     };
-      //     FlutterUnionadEventPlugin.sendContent(map)
-      //   },
-      //   onComplete: () => {
-      //     console.error("rewardVideoAd complete")
-      //   },
-      //   onClose: () => {
-      //     console.error("rewardVideoAd close")
-      //     let map: Record<string, Any> = {
-      //       "adType": "rewardAd", "onAdMethod": "onClose"
-      //     };
-      //     FlutterUnionadEventPlugin.sendContent(map)
-      //   },
-      //   onRewardArrived: (isVerify, rewardType, extraInfo) => {
-      //     console.error("verify: $p0 amount:$p1 name:$p2 p3:$p3 p4:$p4")
-      //     let map: Record<string, Any> = {
-      //       "adType": "rewardAd",
-      //       "onAdMethod": "onVerify",
-      //       "rewardVerify": isVerify,
-      //       "rewardAmount": 0,
-      //       "rewardName": "0",
-      //       "errorCode": 0,
-      //       "error": "",
-      //     };
-      //
-      //     FlutterUnionadEventPlugin.sendContent(map)
-      //   }
-      // }
-      // // 广告基础信息加载完成x
-      // if (this.uiAbility != null) {
-      //   this.rewardAd?.setInteractionListener(adInteractionListener)
-      //   this.rewardAd?.showRewardAd(this.uiAbility.context.windowStage)
-      // }
-      // result.success(true)
+      RewardVideoAd.showAd()
+      result.success(true)
     } else if (call.method == "loadInterstitialAD") {
       let ohosCodeId: string = call.args.get("ohosCodeId");
       // let orientation: number = call.args.get("orientation");
