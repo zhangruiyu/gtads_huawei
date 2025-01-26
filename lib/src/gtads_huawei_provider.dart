@@ -103,6 +103,7 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
     MethodChannelGtadsHuawei.loadRewardVideoAd(
       //android广告id
       androidId: adCode.androidId ?? "",
+      ohosId: adCode.ohosId ?? "",
       //用户id
       userID: userId,
       //奖励

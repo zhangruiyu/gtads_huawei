@@ -74,6 +74,7 @@ class _IndexState extends State<Index> {
                           alias: "huawei",
                           probability: 5,
                           androidId: "testx9dtjwj8hp",
+                          ohosId: "testx9dtjwj8hp",
                         )
                       ],
                       //奖励名称

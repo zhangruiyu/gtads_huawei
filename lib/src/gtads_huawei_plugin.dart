@@ -22,12 +22,14 @@ class MethodChannelGtadsHuawei {
 
   static Future<bool> loadRewardVideoAd({
     required String androidId,
+    required String ohosId,
     required String rewardName,
     required int rewardAmount,
     required String userID,
     String? customData,
   }) async {
     return await methodChannel.invokeMethod("loadRewardVideoAd", {
+      "ohosId": ohosId,
       "androidId": androidId,
       "rewardName": rewardName,
       "rewardAmount": rewardAmount,

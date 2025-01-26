@@ -36,6 +36,30 @@
           ]
         }
       ]
+    },
+    {
+      "name": "gtads_huawei",
+      "srcPath": "../../ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "integration_test",
+      "srcPath": "../../../../../fvm/versions/3.22.1-0.0.pre.16/packages/integration_test/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
     }
   ]
 }

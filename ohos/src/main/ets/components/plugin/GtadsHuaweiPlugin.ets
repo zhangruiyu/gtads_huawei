@@ -13,9 +13,9 @@ import { abilityAccessCtrl, common, UIAbility } from '@kit.AbilityKit';
 import { advertising, AutoAdComponent, identifier } from '@kit.AdsKit';
 import FlutterUnionadEventPlugin from './FlutterUnionadEventPlugin';
 import FullScreenVideoAdInteraction from './FullScreenVideoAdInteraction';
+import RewardVideoAd from './RewardVideoAd';
 import hilog from '@ohos.hilog';
 import { BusinessError } from '@kit.BasicServicesKit';
-import RewardVideoAd from 'gtads_huawei/src/main/ets/components/plugin/RewardVideoAd';
 
 /** GtadsHuaweiPlugin **/
 export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandler, AbilityAware {
