@@ -32,7 +32,7 @@ export default class FlutterUnionadPlugin implements FlutterPlugin, MethodCallHa
   }
 
   onAttachedToEngine(binding: FlutterPluginBinding): void {
-    this.channel = new MethodChannel(binding.getBinaryMessenger(), "flutter_unionad");
+    this.channel = new MethodChannel(binding.getBinaryMessenger(), "gtads_huawei");
     this.channel.setMethodCallHandler(this)
     this.applicationContext = binding.getApplicationContext();
     new FlutterUnionadEventPlugin().onAttachedToEngine(binding);
