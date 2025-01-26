@@ -196,7 +196,7 @@ export default class FullScreenVideoAdInteraction {
     advertising.showAd(FullScreenVideoAdInteraction.mttFullVideoAd, {
       // 插屏广告视频播放是否静音
       mute: true
-    }, FullScreenVideoAdInteraction.mContext as common.UIAbilityContext);
+    }, getContext(FullScreenVideoAdInteraction.mActivity) as common.UIAbilityContext);
 
     // let adInteractionListener: FullAdInteractionListener = {
     //   onShow: () => {

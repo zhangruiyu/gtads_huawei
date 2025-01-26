@@ -59,12 +59,12 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
       atManager.requestPermissionsFromUser(context, ['ohos.permission.APP_TRACKING_CONSENT']).then((data) => {
         // if (data.authResults[0] === 0) {
         //   hilog.info(0x0000, TAG, '%{public}s', 'Succeeded in requesting permission');
-        //   identifier.getOAID().then((data: string) => {
-        //     this.oaid = data;
-        //     hilog.info(0x0000, TAG, '%{public}s', `Succeeded in getting adsIdentifierInfo by promise`);
-        //   }).catch((error: BusinessError) => {
-        //     hilog.error(0x0000, TAG, '%{public}s', `Failed to get AdsIdentifierInfo , message: ${error.message}`);
-        //   })
+          identifier.getOAID().then((data: string) => {
+            // this.oaid = data;
+            hilog.info(0x0000, "TAG", '%{public}s', `Succeeded in getting adsIdentifierInfo by promise`);
+          }).catch((error: BusinessError) => {
+            hilog.error(0x0000, "TAG", '%{public}s', `Failed to get AdsIdentifierInfo , message: ${error.message}`);
+          })
         // } else {
         //   hilog.info(0x0000, TAG, '%{public}s', 'user rejected');
         // }
@@ -72,12 +72,13 @@ export default class GtadsHuaweiPlugin implements FlutterPlugin, MethodCallHandl
         // hilog.error(0x0000, TAG, '%{public}s', `request permission failed, error: ${err.code} ${err.message}`);
       })
     } catch (err) {
-      // hilog.error(0x0000, TAG, '%{public}s', `catch err, code:${err.code}, message: ${err.message}`);
+      hilog.error(0x0000, "TAG", '%{public}s', `catch err, code:${err.code}, message: ${err.message}`);
     }
   }
   onMethodCall(call: MethodCall, result: MethodResult): void {
-    if (call.method == "register") {
-      this.requestOAIDTrackingConsentPermissions(this.applicationContext!);
+
+    if (call.method == "init") {
+      this.requestOAIDTrackingConsentPermissions(getContext(this.uiAbility!));
       result.success(true)
     } else if (call.method == "getOAID") {
       // 使用Promise回调方式获取OAID
