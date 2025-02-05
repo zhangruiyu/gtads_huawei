@@ -10,6 +10,11 @@ class MethodChannelGtadsHuawei {
     return result!;
   }
 
+  static Future<String?> getOAID() async {
+    final result = await methodChannel.invokeMethod<String>('getOAID');
+    return result!;
+  }
+
   static Future<bool> loadInterstitialAD({
     required String androidId,
     required String ohosId,
