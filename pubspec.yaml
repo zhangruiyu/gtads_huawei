@@ -1,6 +1,6 @@
 name: gtads_huawei
 description: "GTAds华为广告支持"
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/zhangruiyu/gtads_huawei
 
 environment:
