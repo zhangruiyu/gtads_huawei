@@ -75,7 +75,8 @@ export default class FullScreenVideoAdInteraction {
         let map: Record<string, Any> = {
           "adType": "interactAd",
           "onAdMethod": "onFail",
-          "error": errorCode + errorMsg
+          "code": errorCode,
+          "message": errorMsg,
         }
         FlutterUnionadEventPlugin.sendContent(map)
       },
