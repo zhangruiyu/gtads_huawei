@@ -64,7 +64,7 @@ class GtadsHuaweiPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
 
             "loadInterstitialAD" -> {
-                InterstitialAd.init(mActivity!!, call.argument("adCode")!!)
+                InterstitialAd.init(mActivity!!, call.argument("androidId")!!)
                 result.success(true)
             }
 

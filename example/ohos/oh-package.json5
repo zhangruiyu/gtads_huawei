@@ -15,7 +15,7 @@
   "overrides": {
     "@ohos/flutter_ohos": "file:./har/flutter.har",
     "gtads_huawei": "../../ohos",
-    "integration_test": "../../../../../fvm/versions/3.22.1-0.0.pre.16/packages/integration_test/ohos",
+    "integration_test": "../../../../../fvm/versions/3.22.1-0.0.pre.32/packages/integration_test/ohos",
     "@ohos/flutter_module": "file:./entry"
   }
 }
