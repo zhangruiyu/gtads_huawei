@@ -51,7 +51,7 @@
     },
     {
       "name": "integration_test",
-      "srcPath": "../../../../../fvm/versions/3.22.1-0.0.pre.32/packages/integration_test/ohos",
+      "srcPath": "../../../../../fvm/versions/3.27.5-ohos-1.0.0/packages/integration_test/ohos",
       "targets": [
         {
           "name": "default",
