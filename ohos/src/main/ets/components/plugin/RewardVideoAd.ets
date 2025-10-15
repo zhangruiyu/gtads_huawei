@@ -155,7 +155,7 @@ export default class RewardVideoAd {
                   "onAdMethod": "onVerify",
                   "rewardVerify": true,
                   "rewardAmount": rewardAmount,
-                  "rewardName": null,
+                  "rewardName": "",
                   "errorCode": 0,
                   "error": null,
                 })
