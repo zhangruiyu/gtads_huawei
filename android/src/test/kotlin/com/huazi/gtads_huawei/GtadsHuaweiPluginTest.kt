@@ -15,13 +15,13 @@ import org.mockito.Mockito
 
 internal class GtadsHuaweiPluginTest {
   @Test
-  fun onMethodCall_getPlatformVersion_returnsExpectedValue() {
+  fun onMethodCall_unknownMethod_returnsNotImplemented() {
     val plugin = GtadsHuaweiPlugin()
 
-    val call = MethodCall("getPlatformVersion", null)
+    val call = MethodCall("unknownMethod", null)
     val mockResult: MethodChannel.Result = Mockito.mock(MethodChannel.Result::class.java)
     plugin.onMethodCall(call, mockResult)
 
-    Mockito.verify(mockResult).success("Android " + android.os.Build.VERSION.RELEASE)
+    Mockito.verify(mockResult).notImplemented()
   }
 }

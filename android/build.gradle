@@ -4,6 +4,9 @@ version '1.0-SNAPSHOT'
 buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         google()
         mavenCentral()
         maven { url 'https://developer.huawei.com/repo/' }
@@ -17,6 +20,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         google()
         mavenCentral()
         maven { url 'https://developer.huawei.com/repo/' }
