@@ -60,14 +60,14 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.1.1'
-        implementation 'com.huawei.hms:ads-lite:13.4.65.300'
-        implementation 'com.huawei.hms:ads-consent:3.4.65.300'
-        implementation 'com.huawei.hms:ads-vast:3.4.44.303'
-        implementation 'com.huawei.hms:ads-vast-player:3.4.44.303'
-        implementation 'com.huawei.hms:ads-identifier:3.4.62.300'
-        implementation 'com.huawei.hms:ads-installreferrer:3.4.62.300'
-        implementation 'com.huawei.hms:stats:6.11.0.301'
-        implementation 'com.huawei.agconnect:agconnect-core:1.9.1.300'
+        implementation 'com.huawei.hms:ads-lite:13.4.81.301'
+        implementation 'com.huawei.hms:ads-consent:3.4.81.301'
+        implementation 'com.huawei.hms:ads-vast:3.4.44.305'
+        implementation 'com.huawei.hms:ads-vast-player:3.4.44.305'
+        implementation 'com.huawei.hms:ads-identifier:3.4.81.301'
+        implementation 'com.huawei.hms:ads-installreferrer:3.4.81.301'
+        implementation 'com.huawei.hms:stats:6.13.0.303'
+        implementation 'com.huawei.agconnect:agconnect-core:1.9.6.300'
     }
 
     testOptions {
