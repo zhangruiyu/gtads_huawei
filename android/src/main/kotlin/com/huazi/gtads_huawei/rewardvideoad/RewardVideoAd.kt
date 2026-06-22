@@ -49,6 +49,14 @@ object RewardVideoAd {
 
             override fun onRewardAdFailedToLoad(errorCode: Int) {
                 // 激励广告加载失败
+                var map: MutableMap<String, Any?> = mutableMapOf(
+                    "adType" to "rewardAd",
+                    "onAdMethod" to "onFail",
+                    "code" to errorCode,
+                    "message" to "激励视频视频广告渲染失败"
+                )
+                LogUtil.e("$TAG  激励视频视频广告渲染失败${errorCode}")
+                FlutterHuaweiAdEventPlugin.sendContent(map)
             }
         }
         // 设置自定义数据
