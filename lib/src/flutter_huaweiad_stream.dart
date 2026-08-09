@@ -9,10 +9,17 @@ import 'flutter_huaweiad_code.dart.dart';
 /// @CreateDate: 2021/8/9 9:30 下午
 /// @Description: dart类作用描述
 
+// Keep the historical public name for source compatibility.
+// ignore: constant_identifier_names
 const EventChannel HuaweiAdEventEvent =
     EventChannel("com.huazi.gtads_huawei/adevent");
 
 class FlutterHuaweiAdStream {
+  static final Stream<dynamic> _adEvents =
+      HuaweiAdEventEvent.receiveBroadcastStream();
+  static int _rewardGeneration = 0;
+  static int _interactionGeneration = 0;
+
   ///
   /// # 注册stream监听原生返回的信息
   ///
@@ -21,10 +28,25 @@ class FlutterHuaweiAdStream {
   /// [interactionAdCallBack] 插屏广告回调
   ///
   static StreamSubscription initAdStream(
-      {FlutterHuaweiadRewardCallBack? flutterHuaweiadRewardCallBack,
+      {required String requestId,
+      FlutterHuaweiadRewardCallBack? flutterHuaweiadRewardCallBack,
       FlutterHuaweiadInteractionCallBack? flutterHuaweiadInteractionCallBack}) {
-    StreamSubscription _adStream =
-        HuaweiAdEventEvent.receiveBroadcastStream().listen((data) {
+    final rewardGeneration =
+        flutterHuaweiadRewardCallBack == null ? null : ++_rewardGeneration;
+    final interactionGeneration = flutterHuaweiadInteractionCallBack == null
+        ? null
+        : ++_interactionGeneration;
+    final StreamSubscription adStream = _adEvents.listen((data) {
+      final eventRequestId = data['requestId'];
+      final adType = data[FlutterHuaweiadType.adType];
+      if (eventRequestId != null && eventRequestId != requestId) return;
+      if (eventRequestId == null &&
+          ((adType == FlutterHuaweiadType.rewardAd &&
+                  rewardGeneration != _rewardGeneration) ||
+              (adType == FlutterHuaweiadType.interactAd &&
+                  interactionGeneration != _interactionGeneration))) {
+        return;
+      }
       switch (data[FlutterHuaweiadType.adType]) {
         ///激励广告
         case FlutterHuaweiadType.rewardAd:
@@ -139,7 +161,7 @@ class FlutterHuaweiAdStream {
           break;
       }
     });
-    return _adStream;
+    return adStream;
   }
 
   static void deleteAdStream(StreamSubscription stream) {

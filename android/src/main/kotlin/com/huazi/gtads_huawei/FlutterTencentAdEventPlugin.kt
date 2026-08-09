@@ -38,7 +38,9 @@ class FlutterHuaweiAdEventPlugin : FlutterPlugin, EventChannel.StreamHandler {
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        eventChannel?.setStreamHandler(null)
         eventChannel = null
-        eventChannel!!.setStreamHandler(null)
+        eventSink = null
+        context = null
     }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:gtads/gtads.dart';
 
 import 'flutter_huaweiad_callback.dart';
@@ -7,6 +8,8 @@ import 'flutter_huaweiad_stream.dart';
 import 'gtads_huawei_plugin.dart';
 
 class GTAdsHuaweiProvider extends GTAdsProvider {
+  static int _requestSequence = 0;
+
   GTAdsHuaweiProvider(String alias) : super(alias, '', '');
 
   @override
@@ -17,8 +20,10 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
   @override
   StreamSubscription? insertAd(
       GTAdsCode adCode, bool isFull, GTAdsCallBack? callBack) {
-    StreamSubscription? stream = null;
+    final requestId = _nextRequestId('interstitial');
+    StreamSubscription? stream;
     stream = FlutterHuaweiAdStream.initAdStream(
+      requestId: requestId,
       flutterHuaweiadInteractionCallBack: FlutterHuaweiadInteractionCallBack(
         onShow: () {
           if (callBack != null && callBack.onShow != null) {
@@ -32,7 +37,7 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
         },
         onFail: (code, message) {
           if (callBack != null && callBack.onFail != null) {
-            callBack.onFail!(adCode, message);
+            callBack.onFail!(adCode, _failureMessage(code, message));
           }
         },
         onClose: () {
@@ -40,8 +45,8 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
             callBack.onClose!(adCode);
           }
         },
-        onReady: () async {
-          await MethodChannelGtadsHuawei.showUnifiedInterstitialAD();
+        onReady: () {
+          unawaited(_showInterstitial(adCode, requestId, callBack));
         },
         onUnReady: () {
           if (callBack != null && callBack.onFail != null) {
@@ -55,8 +60,7 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
         },
       ),
     );
-    MethodChannelGtadsHuawei.loadInterstitialAD(
-        androidId: adCode.androidId ?? "", ohosId: adCode.ohosId ?? "");
+    unawaited(_loadInterstitial(adCode, requestId, callBack));
     return stream;
   }
 
@@ -68,8 +72,10 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
       String userId,
       String customData,
       GTAdsCallBack? callBack) {
+    final requestId = _nextRequestId('reward');
     StreamSubscription? stream;
     stream = FlutterHuaweiAdStream.initAdStream(
+      requestId: requestId,
       //激励广告
       flutterHuaweiadRewardCallBack: FlutterHuaweiadRewardCallBack(onShow: () {
         if (callBack != null && callBack.onShow != null) {
@@ -81,14 +87,14 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
         }
       }, onFail: (code, message) {
         if (callBack != null && callBack.onFail != null) {
-          callBack.onFail!(adCode, message);
+          callBack.onFail!(adCode, _failureMessage(code, message));
         }
       }, onClose: () {
         if (callBack != null && callBack.onClose != null) {
           callBack.onClose!(adCode);
         }
-      }, onReady: () async {
-        await MethodChannelGtadsHuawei.showRewardVideoAd();
+      }, onReady: () {
+        unawaited(_showReward(adCode, requestId, callBack));
       }, onUnReady: () {
         if (callBack != null && callBack.onFail != null) {
           callBack.onFail!(adCode, "激励广告预加载未准备就绪");
@@ -103,19 +109,95 @@ class GTAdsHuaweiProvider extends GTAdsProvider {
         }
       }),
     );
-    MethodChannelGtadsHuawei.loadRewardVideoAd(
-      //android广告id
-      androidId: adCode.androidId ?? "",
-      ohosId: adCode.ohosId ?? "",
-      //用户id
-      userID: userId,
-      //奖励
-      rewardName: rewardName,
-      //奖励数
-      rewardAmount: rewardAmount,
-      //扩展参数 服务器回调使用
-      customData: customData,
-    );
+    unawaited(_loadReward(
+      adCode,
+      rewardName,
+      rewardAmount,
+      userId,
+      customData,
+      requestId,
+      callBack,
+    ));
     return stream;
+  }
+
+  static String _failureMessage(int code, dynamic message) {
+    final detail = message?.toString().trim() ?? '';
+    return detail.isNotEmpty ? detail : '华为广告失败(code=$code)';
+  }
+
+  static String _platformFailureMessage(Object error) {
+    if (error is PlatformException) {
+      final message = error.message?.trim();
+      return message == null || message.isEmpty
+          ? '华为广告调用失败(${error.code})'
+          : '$message(${error.code})';
+    }
+    return '华为广告调用失败：$error';
+  }
+
+  static void _notifyPlatformFailure(
+      GTAdsCode adCode, GTAdsCallBack? callBack, Object error) {
+    callBack?.onFail?.call(adCode, _platformFailureMessage(error));
+  }
+
+  static Future<void> _loadInterstitial(
+      GTAdsCode adCode, String requestId, GTAdsCallBack? callBack) async {
+    try {
+      await MethodChannelGtadsHuawei.loadInterstitialAD(
+        androidId: adCode.androidId ?? '',
+        ohosId: adCode.ohosId ?? '',
+        requestId: requestId,
+      );
+    } catch (error) {
+      _notifyPlatformFailure(adCode, callBack, error);
+    }
+  }
+
+  static Future<void> _showInterstitial(
+      GTAdsCode adCode, String requestId, GTAdsCallBack? callBack) async {
+    try {
+      await MethodChannelGtadsHuawei.showUnifiedInterstitialAD(requestId);
+    } catch (error) {
+      _notifyPlatformFailure(adCode, callBack, error);
+    }
+  }
+
+  static Future<void> _loadReward(
+    GTAdsCode adCode,
+    String rewardName,
+    int rewardAmount,
+    String userId,
+    String customData,
+    String requestId,
+    GTAdsCallBack? callBack,
+  ) async {
+    try {
+      await MethodChannelGtadsHuawei.loadRewardVideoAd(
+        androidId: adCode.androidId ?? '',
+        ohosId: adCode.ohosId ?? '',
+        userID: userId,
+        rewardName: rewardName,
+        rewardAmount: rewardAmount,
+        customData: customData,
+        requestId: requestId,
+      );
+    } catch (error) {
+      _notifyPlatformFailure(adCode, callBack, error);
+    }
+  }
+
+  static Future<void> _showReward(
+      GTAdsCode adCode, String requestId, GTAdsCallBack? callBack) async {
+    try {
+      await MethodChannelGtadsHuawei.showRewardVideoAd(requestId);
+    } catch (error) {
+      _notifyPlatformFailure(adCode, callBack, error);
+    }
+  }
+
+  static String _nextRequestId(String adType) {
+    _requestSequence++;
+    return '$adType-${DateTime.now().microsecondsSinceEpoch}-$_requestSequence';
   }
 }
