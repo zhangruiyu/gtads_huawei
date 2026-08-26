@@ -27,6 +27,7 @@ export default class FullScreenVideoAdInteraction {
   static mActivity: window.WindowStage | null = null
   // 用于保存创建成功的订阅者对象，后续使用其完成订阅及退订的动作
   static subscriber: commonEventManager.CommonEventSubscriber | null = null;
+  private static isRegisteringPPSReceiver: boolean = false;
   private static mttFullVideoAd: advertising.Advertisement | null = null
 
   // //广告所需参数
@@ -97,9 +98,11 @@ export default class FullScreenVideoAdInteraction {
 
   // 订阅方法，需要在每次展示广告前调用
   public static registerPPSReceiver(): void {
-    if (FullScreenVideoAdInteraction.subscriber) {
-      FullScreenVideoAdInteraction.unRegisterPPSReceiver();
+    if (FullScreenVideoAdInteraction.subscriber ||
+      FullScreenVideoAdInteraction.isRegisteringPPSReceiver) {
+      return;
     }
+    FullScreenVideoAdInteraction.isRegisteringPPSReceiver = true;
     // 订阅者信息
     const subscribeInfo: commonEventManager.CommonEventSubscribeInfo = {
       events: ['com.huawei.hms.pps.action.PPS_INTERSTITIAL_STATUS_CHANGED'],
@@ -108,6 +111,7 @@ export default class FullScreenVideoAdInteraction {
     // 创建订阅者回调
     commonEventManager.createSubscriber(subscribeInfo,
       (err: BusinessError, commonEventSubscriber: commonEventManager.CommonEventSubscriber) => {
+        FullScreenVideoAdInteraction.isRegisteringPPSReceiver = false;
         if (err) {
           hilog.error(0x0000, 'testTag', '%{public}s', `CreateSubscriber error, ${err.code}, message: ${err.message}}`);
           return;
@@ -124,6 +128,9 @@ export default class FullScreenVideoAdInteraction {
             if (err) {
               hilog.error(0x0000, 'testTag', '%{public}s', `Subscribe error, ${err.code}, message: ${err.message}`);
             } else {
+              if (FullScreenVideoAdInteraction.subscriber !== commonEventSubscriber) {
+                return;
+              }
               // 订阅者成功接收到公共事件
               hilog.info(0x0000, 'testTag', '%{public}s', 'Succeeded subscribing data');
               // 获取插屏广告页面变化状态
@@ -145,7 +152,7 @@ export default class FullScreenVideoAdInteraction {
                   break;
                 case AdStatus.AD_CLOSED:
                   hilog.info(0x0000, 'testTag', '%{public}s', 'onAdClose');
-                  FullScreenVideoAdInteraction.unRegisterPPSReceiver();
+                  FullScreenVideoAdInteraction.unRegisterPPSReceiver(commonEventSubscriber);
                   Log.e(FullScreenVideoAdInteraction.TAG, "fullScreenVideoAd close")
                   FlutterUnionadEventPlugin.sendContent({
                     "adType": "interactAd", "onAdMethod": "onClose"
@@ -170,15 +177,29 @@ export default class FullScreenVideoAdInteraction {
   }
 
   // 取消订阅
-  public static unRegisterPPSReceiver(): void {
-    commonEventManager.unsubscribe(FullScreenVideoAdInteraction.subscriber, (err: BusinessError) => {
-      if (err) {
-        hilog.error(0x0000, 'testTag', '%{public}s', `Unsubscribe error, ${err.code}, message: ${err.message}}`);
-      } else {
-        hilog.info(0x0000, 'testTag', '%{public}s', 'Succeeded in unsubscribing');
-        FullScreenVideoAdInteraction.subscriber = null;
-      }
-    });
+  public static unRegisterPPSReceiver(
+    targetSubscriber: commonEventManager.CommonEventSubscriber | null = FullScreenVideoAdInteraction.subscriber
+  ): void {
+    if (!targetSubscriber) {
+      return;
+    }
+    if (FullScreenVideoAdInteraction.subscriber === targetSubscriber) {
+      FullScreenVideoAdInteraction.subscriber = null;
+    }
+    try {
+      commonEventManager.unsubscribe(targetSubscriber, (err: BusinessError) => {
+        if (err) {
+          hilog.error(0x0000, 'testTag', '%{public}s',
+            `Unsubscribe error, ${err.code}, message: ${err.message}}`);
+        } else {
+          hilog.info(0x0000, 'testTag', '%{public}s', 'Succeeded in unsubscribing');
+        }
+      });
+    } catch (err) {
+      const error = err as BusinessError;
+      hilog.error(0x0000, 'testTag', '%{public}s',
+        `Unsubscribe exception, ${error.code}, message: ${error.message}}`);
+    }
   }
 
   static showAd() {

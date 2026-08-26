@@ -25,6 +25,7 @@ export default class RewardVideoAd {
   static mActivity: window.WindowStage | null = null
   // 用于保存创建成功的订阅者对象，后续使用其完成订阅及退订的动作
   static subscriber: commonEventManager.CommonEventSubscriber | null = null;
+  private static isRegisteringPPSReceiver: boolean = false;
   private static mTTAdNative: advertising.Advertisement | null = null
   // //广告所需参数
   private static mCodeId: string | null = null
@@ -86,9 +87,10 @@ export default class RewardVideoAd {
 
   // 订阅方法，需要在每次展示广告前调用
   public static registerPPSReceiver(): void {
-    if (RewardVideoAd.subscriber) {
-      RewardVideoAd.unRegisterPPSReceiver();
+    if (RewardVideoAd.subscriber || RewardVideoAd.isRegisteringPPSReceiver) {
+      return;
     }
+    RewardVideoAd.isRegisteringPPSReceiver = true;
     // 订阅者信息
     const subscribeInfo: commonEventManager.CommonEventSubscribeInfo = {
       events: ['com.huawei.hms.pps.action.PPS_REWARD_STATUS_CHANGED'],
@@ -99,6 +101,7 @@ export default class RewardVideoAd {
     // 创建订阅者回调
     commonEventManager.createSubscriber(subscribeInfo,
       (err: BusinessError, commonEventSubscriber: commonEventManager.CommonEventSubscriber) => {
+        RewardVideoAd.isRegisteringPPSReceiver = false;
         if (err) {
           hilog.error(0x0000, 'testTag', '%{public}s', `CreateSubscriber error, ${err.code}, message: ${err.message}}`);
           return;
@@ -110,15 +113,18 @@ export default class RewardVideoAd {
           hilog.warn(0x0000, 'testTag', '%{public}s', 'Need to create subscriber');
           return;
         }
-        commonEventManager.subscribe(RewardVideoAd.subscriber, (err: BusinessError, commonEventSubscriber:
+        commonEventManager.subscribe(RewardVideoAd.subscriber, (err: BusinessError, commonEventData:
           commonEventManager.CommonEventData) => {
           if (err) {
             hilog.error(0x0000, 'testTag', '%{public}s', `Subscribe error, ${err.code}, message: ${err.message}`);
           } else {
+            if (RewardVideoAd.subscriber !== commonEventSubscriber) {
+              return;
+            }
             // 订阅者成功接收到公共事件
             hilog.info(0x0000, 'testTag', '%{public}s', 'Succeeded subscribing data');
             // 获取插屏广告页面变化状态
-            const status: string = commonEventSubscriber?.parameters?.[KEY_REWARD_STATUS];
+            const status: string = commonEventData?.parameters?.[KEY_REWARD_STATUS];
             switch (status) {
               case AdStatus.AD_OPEN:
                 hilog.info(0x0000, 'testTag', '%{public}s', 'onAdOpen');
@@ -136,7 +142,7 @@ export default class RewardVideoAd {
                 break;
               case AdStatus.AD_CLOSED:
                 hilog.info(0x0000, 'testTag', '%{public}s', 'onAdClose');
-                RewardVideoAd.unRegisterPPSReceiver();
+                RewardVideoAd.unRegisterPPSReceiver(commonEventSubscriber);
                 Log.e(RewardVideoAd.TAG, "fullScreenVideoAd close")
                 FlutterUnionadEventPlugin.sendContent({
                   "adType": "rewardAd", "onAdMethod": "onClose"
@@ -144,7 +150,7 @@ export default class RewardVideoAd {
                 break;
               case AdStatus.AD_REWARDED:
                 const rewardData: Record<string, string | number> =
-                  commonEventSubscriber?.parameters?.[KEY_REWARD_DATA];
+                  commonEventData?.parameters?.[KEY_REWARD_DATA];
 
                 const rewardType: string = rewardData?.rewardType as string;
                 const rewardAmount: number = rewardData?.rewardAmount as number;
@@ -179,15 +185,29 @@ export default class RewardVideoAd {
   }
 
   // 取消订阅
-  public static unRegisterPPSReceiver(): void {
-    commonEventManager.unsubscribe(RewardVideoAd.subscriber, (err: BusinessError) => {
-      if (err) {
-        hilog.error(0x0000, 'testTag', '%{public}s', `Unsubscribe error, ${err.code}, message: ${err.message}}`);
-      } else {
-        hilog.info(0x0000, 'testTag', '%{public}s', 'Succeeded in unsubscribing');
-        RewardVideoAd.subscriber = null;
-      }
-    });
+  public static unRegisterPPSReceiver(
+    targetSubscriber: commonEventManager.CommonEventSubscriber | null = RewardVideoAd.subscriber
+  ): void {
+    if (!targetSubscriber) {
+      return;
+    }
+    if (RewardVideoAd.subscriber === targetSubscriber) {
+      RewardVideoAd.subscriber = null;
+    }
+    try {
+      commonEventManager.unsubscribe(targetSubscriber, (err: BusinessError) => {
+        if (err) {
+          hilog.error(0x0000, 'testTag', '%{public}s',
+            `Unsubscribe error, ${err.code}, message: ${err.message}}`);
+        } else {
+          hilog.info(0x0000, 'testTag', '%{public}s', 'Succeeded in unsubscribing');
+        }
+      });
+    } catch (err) {
+      const error = err as BusinessError;
+      hilog.error(0x0000, 'testTag', '%{public}s',
+        `Unsubscribe exception, ${error.code}, message: ${error.message}}`);
+    }
   }
 
   public static showAd(): void {
